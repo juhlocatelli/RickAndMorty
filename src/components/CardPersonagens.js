@@ -1,32 +1,59 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 
-export default function CardPersonagens({ character, onPress }) {
+export default function CardPersonagens({ personagem }) {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
-      <Image source={{ uri: character.image }} style={styles.image} />
-      <View style={styles.info}>
-        <Text style={styles.name}>{character.name}</Text>
-        <Text style={styles.meta}>
-          {character.status} • {character.species}
-        </Text>
+    <View style={styles.card}>
+      <Image source={{ uri: personagem.image }} style={styles.imagem} />
+      <View style={styles.infoContainer}>
+        <Text style={styles.nome}>{personagem.name}</Text>
+        <Text style={styles.info}>Status: <Text style={styles.valor}>{personagem.status}</Text></Text>
+        <Text style={styles.info}>Espécie: <Text style={styles.valor}>{personagem.species}</Text></Text>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: 'row',
+    backgroundColor: '#0f1529',
+    marginVertical: 10,
+    marginHorizontal: 16,
+    borderRadius: 12,
     padding: 10,
-    marginVertical: 6,
-    marginHorizontal: 12,
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    elevation: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#39ff14', 
+    shadowColor: '#39ff14',
+    shadowOpacity: 0.4,
+    shadowRadius: 10,
   },
-  image: { width: 80, height: 80, borderRadius: 8 },
-  info: { marginLeft: 12, justifyContent: 'center' },
-  name: { fontSize: 16, fontWeight: '700' },
-  meta: { marginTop: 4, fontSize: 13, color: '#555' },
+  imagem: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+    marginRight: 12,
+    borderWidth: 2,
+    borderColor: '#39ff14',
+  },
+  infoContainer: {
+    flex: 1,
+  },
+  nome: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#39ff14',
+    marginBottom: 4,
+    textShadowColor: '#39ff14',
+    textShadowRadius: 6,
+  },
+  info: {
+    fontSize: 14,
+    color: '#d0d0d0'
+  },
+  valor: {
+    color: '#39ff14',
+    fontWeight: '600'
+  }
 });

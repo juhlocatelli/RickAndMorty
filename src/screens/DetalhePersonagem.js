@@ -1,59 +1,106 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
-import { fetchCharacterById } from '../api/ApiRick';
+import { fetchpersonagemById } from '../api/ApiRick';
 
 export default function DetalhePersonagem({ route }) {
   const { id } = route.params;
-  const [character, setCharacter] = useState(null);
-  const [loading, setLoading] = useState(true);
-
+  const [personagem, setpersonagem] = useState(null);
+  const [carregando, setcarregando] = useState(true);
   useEffect(() => {
     let mounted = true;
     (async () => {
       try {
-        const data = await fetchCharacterById(id);
-        if (mounted) setCharacter(data);
+        const data = await fetchpersonagemById(id);
+        if (mounted) setpersonagem(data);
       } catch (err) {
         console.error(err);
       } finally {
-        if (mounted) setLoading(false);
+        if (mounted) setcarregando(false);
       }
     })();
     return () => (mounted = false);
   }, [id]);
 
-  if (loading) {
+  if (carregando) {
     return (
-      <View style={{ flex:1, justifyContent:'center', alignItems:'center' }}>
-        <ActivityIndicator size="large" />
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#00ff9d" />
+        <Text style={styles.loadingText}>Carregando detalhes...</Text>
       </View>
     );
   }
 
-  if (!character) {
+  if (!personagem) {
     return (
-      <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-        <Text>Não foi possível carregar o personagem.</Text>
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>Não foi possível carregar o personagem.</Text>
       </View>
     );
   }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image source={{ uri: character.image }} style={styles.image} />
-      <Text style={styles.name}>{character.name}</Text>
-      <Text style={styles.info}>Status: {character.status}</Text>
-      <Text style={styles.info}>Espécie: {character.species}</Text>
-      <Text style={styles.info}>Gênero: {character.gender}</Text>
-      <Text style={styles.info}>Origem: {character.origin?.name}</Text>
-      <Text style={styles.info}>Localização: {character.location?.name}</Text>
+      <Image source={{ uri: personagem.image }} style={styles.imagem} />
+      <Text style={styles.nome}>{personagem.name}</Text>
+      <Text style={styles.info}>Status: <Text style={styles.valor}>{personagem.status}</Text></Text>
+      <Text style={styles.info}>Espécie: <Text style={styles.valor}>{personagem.species}</Text></Text>
+      <Text style={styles.info}>Gênero: <Text style={styles.valor}>{personagem.gender}</Text></Text>
+      <Text style={styles.info}>Origem: <Text style={styles.valor}>{personagem.origin?.name}</Text></Text>
+      <Text style={styles.info}>Localização: <Text style={styles.valor}>{personagem.location?.name}</Text></Text>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { alignItems: 'center', padding: 16 },
-  image: { width: 200, height: 200, borderRadius: 12, marginBottom: 12 },
-  name: { fontSize: 22, fontWeight: '700', marginBottom: 8 },
-  info: { fontSize: 16, marginBottom: 6 },
+  container: { 
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#0a0a0f',
+    flexGrow: 1
+  },
+  imagem: { 
+    width: 220, 
+    height: 220,
+    borderRadius: 16, 
+    marginBottom: 16,
+    borderWidth: 3,
+    borderColor: '#00ff9d'
+  },
+  nome: { 
+    fontSize: 26, 
+    fontWeight: '700',
+    color: '#00ff9d', 
+    marginBottom: 12,
+    textShadowColor: '#00ff9d',
+    textShadowRadius: 10
+  },
+  info: { 
+    fontSize: 18,
+    color: '#ffffff',
+    marginBottom: 8
+  },
+  valor: {
+    color: '#00ff9d',
+    fontWeight: '600'
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#0a0a0f'
+  },
+  loadingText: {
+    marginTop: 10,
+    color: '#00ff9d'
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#0a0a0f'
+  },
+  errorText: {
+    color: '#ff4d4d',
+    fontSize: 18
+  }
 });

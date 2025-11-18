@@ -5,10 +5,10 @@ const api = axios.create({
   timeout: 10000,
 });
 
-export const fetchCharacters = (page = 1) =>
+export const fetchPersonagens = (page = 1) =>
   api.get(`/character?page=${page}`).then(res => res.data);
 
-export const fetchCharacterById = (id) =>
+export const fetchpersonagemById = (id) =>
   api.get(`/character/${id}`).then(res => res.data);
 
 export default api;
